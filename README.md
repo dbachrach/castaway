@@ -1,6 +1,5 @@
 # castaway
 
-[![CI Status](http://img.shields.io/travis/Dustin Bachrach/castaway.svg?style=flat)](https://travis-ci.org/Dustin Bachrach/castaway)
 [![Version](https://img.shields.io/cocoapods/v/castaway.svg?style=flat)](http://cocoadocs.org/docsets/castaway)
 [![License](https://img.shields.io/cocoapods/l/castaway.svg?style=flat)](http://cocoadocs.org/docsets/castaway)
 [![Platform](https://img.shields.io/cocoapods/p/castaway.svg?style=flat)](http://cocoadocs.org/docsets/castaway)
@@ -60,7 +59,7 @@ it, simply add the following line to your Podfile:
 
 Dustin Bachrach, ahdustin@gmail.com
 
-## Special thanks to [PromiseKit](https://github.com/mxcl/PromiseKit) by [Max Howell](https://github.com/mxcl) for  [NSMethodSignatureForBlock](https://github.com/mxcl/PromiseKit/blob/master/objc/Private/NSMethodSignatureForBlock.m).
+Special thanks to [PromiseKit](https://github.com/mxcl/PromiseKit) by [Max Howell](https://github.com/mxcl) for  [NSMethodSignatureForBlock](https://github.com/mxcl/PromiseKit/blob/master/objc/Private/NSMethodSignatureForBlock.m).
 
 ## License
 
