@@ -1,0 +1,20 @@
+PODS:
+  - castaway (0.1.0)
+  - Expecta (0.3.1)
+  - Specta (0.2.1)
+
+DEPENDENCIES:
+  - castaway (from `../`)
+  - Expecta
+  - Specta (~> 0.2.1)
+
+EXTERNAL SOURCES:
+  castaway:
+    :path: ../
+
+SPEC CHECKSUMS:
+  castaway: 33e08ed8518a3ff883b255f5f5bc74bb82b3c1ac
+  Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
+  Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
+
+COCOAPODS: 0.33.1
