@@ -17,21 +17,28 @@
 {
     return [^BOOL(void(^block)(id)) {
         NSMethodSignature* methodSignature = NSMethodSignatureForBlock(block);
+        
         const char* argType = [methodSignature getArgumentTypeAtIndex:1];
+        NSString* type = [NSString stringWithUTF8String:argType];
         
-        Protocol* protocol = NSProtocolFromTypeEncoding(argType);
-        
+        Protocol* protocol = NSProtocolFromTypeEncoding(type);
         if (protocol && [self conformsToProtocol:protocol]) {
             block(self);
             return YES;
         }
-        else {
-            Class class = NSClassFromTypeEncoding(argType);
-            if (class && [self isKindOfClass:class]) {
-                block(self);
-                return YES;
-            }
+        
+        Class class = NSClassFromTypeEncoding(type);
+        if (class && [self isKindOfClass:class]) {
+            block(self);
+            return YES;
         }
+        
+        if ([type isEqualToString:@"@"]) {
+            // If the type is `id`, consider that a succesful cast.
+            block(self);
+            return YES;
+        }
+        
         return NO;
     } copy];
 }

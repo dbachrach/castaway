@@ -13,6 +13,8 @@ static const NSInteger SHAPE_AREA = 10;
 static const NSInteger DRAW_VALUE = 20;
 static const NSInteger SPLIT_VALUE = 30;
 static const NSInteger SPIN_VALUE = 40;
+static const NSInteger ID_VALUE = 50;
+static const NSInteger STRING_VALUE = 60;
 
 
 @protocol Drawable <NSObject>
@@ -123,6 +125,16 @@ describe(@"[NSObject as]", ^{
         });
         expect(i).to.equal(INITIAL_VALUE);
     });
+    
+    it(@"can cast to id", ^{
+        __block NSInteger i = INITIAL_VALUE;
+        
+        Circle* c = [Circle new];
+        c.as(^(id something) {
+            i = ID_VALUE;
+        });
+        expect(i).to.equal(ID_VALUE);
+    });
 });
 
 describe(@"[NSObject match]", ^{
@@ -195,6 +207,21 @@ describe(@"[NSObject match]", ^{
             },
         ]);
         expect(i).to.equal(SPIN_VALUE);
+    });
+    
+    it(@"matches to id", ^{
+        __block NSInteger i = INITIAL_VALUE;
+        
+        Circle* c = [Circle new];
+        c.match(@[
+            ^(NSString* str) {
+                i = STRING_VALUE;
+            },
+            ^(id something) {
+                i = ID_VALUE;
+            },
+                   ]);
+        expect(i).to.equal(ID_VALUE);
     });
 });
 

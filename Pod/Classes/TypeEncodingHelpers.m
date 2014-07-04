@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-Protocol* NSProtocolFromTypeEncoding(const char* typeStr)
+
+Protocol* NSProtocolFromTypeEncoding(NSString* type)
 {
-    NSString* type = [NSString stringWithUTF8String:typeStr];
     NSError* error = nil;
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"@\"<(.*)>\""
                                                                            options:0
@@ -31,9 +31,8 @@ Protocol* NSProtocolFromTypeEncoding(const char* typeStr)
     return nil;
 }
 
-Class NSClassFromTypeEncoding(const char* typeStr)
+Class NSClassFromTypeEncoding(NSString* type)
 {
-    NSString* type = [NSString stringWithUTF8String:typeStr];
     NSError* error = nil;
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
                                                                            options:0
