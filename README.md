@@ -44,6 +44,9 @@ result.match(@[
     },
     ^(UIView* view) {
         [view removeFromSuperview];
+    },
+    ^(id somethingElse) {
+        NSLog(@"wasn't expecting: %@", somethingElse);
     }
 ]);
 ```
