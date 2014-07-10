@@ -51,6 +51,24 @@ result.match(@[
 ]);
 ```
 
+The `match` construct returns the result of the executed block that matched.
+
+```objc
+NSString* description = obj.match(@[
+    ^(NSArray* manyThings) {
+        return [NSString stringWithFormat:@"%d things", manyThings.count];
+    },
+    ^(NSString* str) {
+        return @"one string";
+    },
+    ^(id somethingElse) {
+        return @"one random thing";
+    }
+]);
+```
+
+If `obj` is an NSArray of 3 items, `description` is `"3 things"`. If `obj` is a string, it's `"one string"`. Otherwise it's `"one random thing"`.
+
 ## Installation
 
 castaway is available through [CocoaPods](http://cocoapods.org). To install
