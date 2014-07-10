@@ -15,6 +15,7 @@ static const NSInteger SPLIT_VALUE = 30;
 static const NSInteger SPIN_VALUE = 40;
 static const NSInteger ID_VALUE = 50;
 static const NSInteger STRING_VALUE = 60;
+static const NSInteger PRINT_VALUE = 70;
 
 
 @protocol Drawable <NSObject>
@@ -222,6 +223,32 @@ describe(@"[NSObject match]", ^{
             },
                    ]);
         expect(i).to.equal(ID_VALUE);
+    });
+    
+    it(@"matches and returns executed block results", ^{
+        Circle* c = [Circle new];
+        NSNumber* iNum = c.match(@[
+            ^(id<Drawable> drawable) {
+                return @(DRAW_VALUE);
+            },
+            ^(id something) {
+                return @(ID_VALUE);
+            },
+        ]);
+        expect(iNum.integerValue).to.equal(DRAW_VALUE);
+    });
+    
+    it(@"matches and returns executed block results of id", ^{
+        Circle* c = [Circle new];
+        NSNumber* iNum = c.match(@[
+            ^(id<Printable> printable) {
+                return @(PRINT_VALUE);
+            },
+             ^(id something) {
+                return @(ID_VALUE);
+            },
+        ]);
+        expect(iNum.integerValue).to.equal(ID_VALUE);
     });
 });
 

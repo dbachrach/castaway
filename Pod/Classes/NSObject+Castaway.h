@@ -30,7 +30,7 @@
  * 
  * If myObj is (or is a subclass of) NSString, then the block will be executed and `str` will be `myObj` as an NSString.
  */
-- (BOOL(^)(id(^)(id)))as;
+- (BOOL(^)(void(^)(id)))as;
 
 /**
  * Returns a function which performs the match operation.

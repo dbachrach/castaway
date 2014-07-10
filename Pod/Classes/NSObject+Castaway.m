@@ -11,74 +11,44 @@
 #import "TypeEncodingHelpers.m"
 
 
-@interface CASAsResult : NSObject
-
-@property (nonatomic) BOOL matched;
-@property (strong, nonatomic) id result;
-
-+ (instancetype)matchedWithResult:(id)result;
-+ (instancetype)unmatched;
-
-@end
-
-
-@implementation CASAsResult
-
-+ (instancetype)matchedWithResult:(id)result
+/**
+ * Returns whether the object can be cast to the type of the block's first argument.
+ */
+static BOOL CASObjectCastsToBlock(id obj, id block)
 {
-    CASAsResult* asResult = [[CASAsResult alloc] init];
-    asResult.matched = YES;
-    asResult.result = result;
-    return asResult;
+    NSMethodSignature* methodSignature = NSMethodSignatureForBlock(block);
+    
+    const char* argType = [methodSignature getArgumentTypeAtIndex:1];
+    NSString* type = [NSString stringWithUTF8String:argType];
+    
+    Protocol* protocol = NSProtocolFromTypeEncoding(type);
+    if (protocol && [obj conformsToProtocol:protocol]) {
+        return YES;
+    }
+    
+    Class class = NSClassFromTypeEncoding(type);
+    if (class && [obj isKindOfClass:class]) {
+        return YES;
+    }
+    
+    if ([type isEqualToString:@"@"]) {
+        // If the type is `id`, consider that a succesful cast.
+        return YES;
+    }
+    
+    return NO;
 }
-
-+ (instancetype)unmatched
-{
-    CASAsResult* asResult = [[CASAsResult alloc] init];
-    asResult.matched = NO;
-    return asResult;
-}
-
-@end
-
 
 @implementation NSObject (Castaway)
 
-- (CASAsResult*(^)(id(^)(id)))CASInternalAs
+- (BOOL(^)(void(^)(id)))as
 {
-    return [^CASAsResult*(id(^block)(id)) {
-        NSMethodSignature* methodSignature = NSMethodSignatureForBlock(block);
-        
-        const char* argType = [methodSignature getArgumentTypeAtIndex:1];
-        NSString* type = [NSString stringWithUTF8String:argType];
-        
-        Protocol* protocol = NSProtocolFromTypeEncoding(type);
-        if (protocol && [self conformsToProtocol:protocol]) {
-            id result = block(self);
-            return [CASAsResult matchedWithResult:result];
+    return [^BOOL(void(^block)(id)) {
+        if (CASObjectCastsToBlock(self, block)) {
+            block(self);
+            return YES;
         }
-        
-        Class class = NSClassFromTypeEncoding(type);
-        if (class && [self isKindOfClass:class]) {
-            id result = block(self);
-            return [CASAsResult matchedWithResult:result];
-        }
-        
-        if ([type isEqualToString:@"@"]) {
-            // If the type is `id`, consider that a succesful cast.
-            id result = block(self);
-            return [CASAsResult matchedWithResult:result];
-        }
-        
-        return [CASAsResult unmatched];
-    } copy];
-}
-
-- (BOOL(^)(id(^)(id)))as
-{
-    return [^BOOL(id(^block)(id)) {
-        CASAsResult* asResult = self.CASInternalAs(block);
-        return asResult.matched;
+        return NO;
     } copy];
 }
 
@@ -86,9 +56,8 @@
 {
     return [^id(NSArray* patterns) {
         for (id(^block)(id) in patterns) {
-            CASAsResult* asResult = self.CASInternalAs(block);
-            if (asResult.matched) {
-                return asResult.result;
+            if (CASObjectCastsToBlock(self, block)) {
+                return block(self);
             }
         }
         return nil;
