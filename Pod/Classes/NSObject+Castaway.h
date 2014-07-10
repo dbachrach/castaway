@@ -30,14 +30,15 @@
  * 
  * If myObj is (or is a subclass of) NSString, then the block will be executed and `str` will be `myObj` as an NSString.
  */
-- (BOOL(^)(void(^)(id)))as;
+- (BOOL(^)(id(^)(id)))as;
 
 /**
  * Returns a function which performs the match operation.
- * The returned function takes an NSArray of `As Blocks`, and it returns whether any cast succeeded.
- * The `As Blocks` are in the form `void(^)(id)`. Their only parameter is an object with the cast's intended type.
+ * The returned function takes an NSArray of `As Blocks`, and it returns the result of the `As Block` that is executed.
+ * The `As Blocks` are in the form `id(^)(id)`. Their only parameter is an object with the cast's intended type.
  * The `As Block` is executed if the cast succeeds.
  * Only the first cast that succeeds is executed.
+ * The return value from the executed `As Block` is returned from the call to -match.
  *
  * Example:
  *     id myObj;
@@ -54,6 +55,6 @@
  *   If, instead, myObj is an NSNumber, then the second block will be executed and `num` will be `myObj` as an NSNumber.
  *   If myObj is not an NSString or NSNumber, neither block is executed.
  */
-- (BOOL(^)(NSArray*))match;
+- (id(^)(NSArray*))match;
 
 @end

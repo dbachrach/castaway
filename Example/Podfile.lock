@@ -1,5 +1,5 @@
 PODS:
-  - castaway (0.1.0)
+  - castaway (0.2.0)
   - Expecta (0.3.1)
   - Specta (0.2.1)
 
@@ -13,7 +13,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  castaway: f9eb1ae3464c94ac291a183e8d2c88fedaf0f6f8
+  castaway: e5b4e54fb2baf0a26ba048c1eb3b25206ccc7588
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
