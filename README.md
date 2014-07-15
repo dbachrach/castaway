@@ -75,6 +75,12 @@ castaway is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
     pod "castaway"
+
+Then, you just need to import the castaway header:
+
+```objc
+#import <castaway/NSObject+Castaway.h>
+```
     
 ## Calling `as` on `id` types
 
