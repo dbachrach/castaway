@@ -9,7 +9,7 @@
 **castaway** is a simple library to add an `as` language construct to Objective-C.
 
 ```objc
-id obj = /* get an object */;
+NSObject* obj = /* get an object */;
 
 obj.as(^(id<Drawable> drawable) {
     [drawable draw];
@@ -19,7 +19,7 @@ obj.as(^(id<Drawable> drawable) {
 The typical way to do this without castaway is:
 
 ```objc
-id obj = /* get an object */;
+NSObject* obj = /* get an object */;
 
 if ([obj conformsToProtocol:@protocol(Drawable)]) {
     [(id<Drawable>)obj draw];
@@ -75,6 +75,18 @@ castaway is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
     pod "castaway"
+    
+## Calling `as` on `id` types
+
+In the above examples, we used `as` and `match` with dot-syntax. You're not able to use property syntax on `id` typed variables, so you should use the message versions of `as` and `match`.
+
+```objc
+id obj = /* get an object */;
+
+[obj as:^(id<Drawable> drawable) {
+    [drawable draw];
+}]; 
+```
 
 ## Author
 

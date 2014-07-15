@@ -44,24 +44,34 @@ static BOOL CASObjectCastsToBlock(id obj, id block)
 - (BOOL(^)(void(^)(id)))as
 {
     return [^BOOL(void(^block)(id)) {
-        if (CASObjectCastsToBlock(self, block)) {
-            block(self);
-            return YES;
-        }
-        return NO;
+        return [self as:block];
     } copy];
+}
+
+- (BOOL)as:(void(^)(id))block
+{
+    if (CASObjectCastsToBlock(self, block)) {
+        block(self);
+        return YES;
+    }
+    return NO;
 }
 
 - (id(^)(NSArray*))match
 {
     return [^id(NSArray* patterns) {
-        for (id(^block)(id) in patterns) {
-            if (CASObjectCastsToBlock(self, block)) {
-                return block(self);
-            }
-        }
-        return nil;
+        return [self match:patterns];
     } copy];
+}
+
+- (id)match:(NSArray*)patterns
+{
+    for (id(^block)(id) in patterns) {
+        if (CASObjectCastsToBlock(self, block)) {
+            return block(self);
+        }
+    }
+    return nil;
 }
 
 @end
