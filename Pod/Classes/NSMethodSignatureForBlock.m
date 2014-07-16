@@ -2,7 +2,7 @@
 // From PromiseKit by Max Howell
 // https://github.com/mxcl/PromiseKit
 
-#import <Foundation/Foundation.h>
+#import "NSMethodSignatureForBlock.h"
 
 struct PMKBlockLiteral {
     void *isa; // initialized to &_NSConcreteStackBlock or &_NSConcreteGlobalBlock
@@ -29,7 +29,8 @@ typedef NS_OPTIONS(NSUInteger, PMKBlockDescriptionFlags) {
     PMKBlockDescriptionFlagsHasSignature = (1 << 30)
 };
 
-NSMethodSignature *NSMethodSignatureForBlock(id block) {
+NSMethodSignature *NSMethodSignatureForBlock(id block)
+{
     if (!block)
         return nil;
     

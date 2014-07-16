@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Dustin Bachrach. All rights reserved.
 //
 
-#import <castaway/NSObject+Castaway.h>
+#import <castaway/castaway.h>
 
 static const NSInteger INITIAL_VALUE = 0;
 static const NSInteger SHAPE_AREA = 10;

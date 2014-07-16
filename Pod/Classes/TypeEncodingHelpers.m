@@ -6,8 +6,7 @@
 //
 //
 
-#import <Foundation/Foundation.h>
-
+#import "TypeEncodingHelpers.h"
 
 Protocol* NSProtocolFromTypeEncoding(NSString* type)
 {

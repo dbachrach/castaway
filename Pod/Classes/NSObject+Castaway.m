@@ -7,8 +7,8 @@
 //
 
 #import "NSObject+Castaway.h"
-#import "NSMethodSignatureForBlock.m"
-#import "TypeEncodingHelpers.m"
+#import "NSMethodSignatureForBlock.h"
+#import "TypeEncodingHelpers.h"
 
 
 /**

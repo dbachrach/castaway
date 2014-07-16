@@ -79,7 +79,7 @@ it, simply add the following line to your Podfile:
 Then, you just need to import the castaway header:
 
 ```objc
-#import <castaway/NSObject+Castaway.h>
+#import <castaway/castaway.h>
 ```
     
 ## Calling `as` on `id` types
