@@ -10,6 +10,8 @@
 #import "NSMethodSignatureForBlock.h"
 #import "TypeEncodingHelpers.h"
 
+#import <objc/runtime.h>
+
 
 /**
  * Returns whether the object can be cast to the type of the block's first argument.
@@ -28,6 +30,11 @@ static BOOL CASObjectCastsToBlock(id obj, id block)
     
     Class class = NSClassFromTypeEncoding(type);
     if (class && [obj isKindOfClass:class]) {
+        return YES;
+    }
+    
+    if ([type isEqualToString:@"#"] && class_isMetaClass(object_getClass(obj))) {
+        // If the type is `Class`
         return YES;
     }
     

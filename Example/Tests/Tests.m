@@ -189,6 +189,16 @@ describe(@"[NSObject as:]", ^{
         }];
         expect(i).to.equal(ID_VALUE);
     });
+    
+    it(@"can cast to a class type", ^{
+        __block NSInteger i = INITIAL_VALUE;
+        
+        id x = Circle.class;
+        [x as:^(Class something) {
+            i = ID_VALUE;
+        }];
+        expect(i).to.equal(ID_VALUE);
+    });
 });
 
 describe(@"[NSObject match]", ^{
@@ -416,6 +426,19 @@ describe(@"[NSObject match:]", ^{
         },
                                     ]];
         expect(iNum.integerValue).to.equal(ID_VALUE);
+    });
+    
+    it(@"returns nil when nothing matches", ^{
+        id c = [Circle new];
+        NSNumber* iNum = [c match:@[
+                                    ^(id<Printable> printable) {
+            return @(PRINT_VALUE);
+        },
+                                     ^(NSString* something) {
+            return @(ID_VALUE);
+        },
+                                     ]];
+        expect(iNum).to.equal(nil);
     });
 });
 
