@@ -62,6 +62,8 @@ static id CASCallDynamicBlock(id block, id data)
             return nil;
         case '@':
             return ((id(^)(id))block)(data);
+        case '#':
+            return ((Class(^)(id))block)(data);
         case '*': {
             char *str = ((char*(^)(id))block)(data);
             return str ? @(str) : nil;

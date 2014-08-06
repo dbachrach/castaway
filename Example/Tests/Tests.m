@@ -440,6 +440,18 @@ describe(@"[NSObject match:]", ^{
                                      ]];
         expect(iNum).to.equal(nil);
     });
+    
+    it(@"can return a Class type", ^{
+        id c = Circle.class;
+        id result = [c match:@[
+                               ^(NSString* str) {
+            return str;
+        },
+                               ^(Class class) {
+            return class;
+        }]];
+        expect(result).to.equal(c);
+    });
 });
 
 SpecEnd
