@@ -23,24 +23,28 @@ static BOOL CASObjectCastsToBlock(id obj, id block)
     const char* argType = [methodSignature getArgumentTypeAtIndex:1];
     NSString* type = [NSString stringWithUTF8String:argType];
     
-    Protocol* protocol = NSProtocolFromTypeEncoding(type);
-    if (protocol && [obj conformsToProtocol:protocol]) {
-        return YES;
-    }
-    
-    Class class = NSClassFromTypeEncoding(type);
-    if (class && [obj isKindOfClass:class]) {
-        return YES;
-    }
-    
-    if ([type isEqualToString:@"#"] && class_isMetaClass(object_getClass(obj))) {
-        // If the type is `Class`
-        return YES;
-    }
-    
     if ([type isEqualToString:@"@"]) {
         // If the type is `id`, consider that a succesful cast.
         return YES;
+    }
+    
+    Class class = nil;
+    Protocol* protocol = nil;
+    
+    if (NSClassAndProtocolFromTypeEncoding(type, &class, &protocol)) {
+    
+        if (class && [obj isKindOfClass:class]) {
+            return YES;
+        }
+
+        if (protocol && [obj conformsToProtocol:protocol]) {
+            return YES;
+        }
+        
+        if ([type isEqualToString:@"#"] && class_isMetaClass(object_getClass(obj))) {
+            // If the type is `Class`
+            return YES;
+        }
     }
     
     return NO;

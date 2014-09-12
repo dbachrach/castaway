@@ -8,6 +8,4 @@
 
 #import <Foundation/Foundation.h>
 
-Protocol* NSProtocolFromTypeEncoding(NSString* type);
-
-Class NSClassFromTypeEncoding(NSString* type);
+BOOL NSClassAndProtocolFromTypeEncoding(NSString* type, Class* cls, Protocol** prt);

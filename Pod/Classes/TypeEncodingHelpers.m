@@ -8,36 +8,19 @@
 
 #import "TypeEncodingHelpers.h"
 
-Protocol* NSProtocolFromTypeEncoding(NSString* type)
-{
-    NSError* error = nil;
-    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"@\"<(.*)>\""
-                                                                           options:0
-                                                                             error:&error];
-    if (error) {
-        return nil;
-    }
-    
-    NSTextCheckingResult* result = [regex firstMatchInString:type
-                                                     options:0
-                                                       range:NSMakeRange(0, type.length)];
-    
-    if (result.range.location != NSNotFound) {
-        NSString* protocolName = [type substringWithRange:[result rangeAtIndex:1]];
-        return NSProtocolFromString(protocolName);
-    }
-    
-    return nil;
-}
+@class Protocol;
 
-Class NSClassFromTypeEncoding(NSString* type)
+BOOL NSClassAndProtocolFromTypeEncoding(NSString* type, Class* cls, Protocol** prt)
 {
+    *cls = nil;
+    *prt = nil;
+    
     NSError* error = nil;
     NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
                                                                            options:0
                                                                              error:&error];
     if (error) {
-        return nil;
+        return NO;
     }
     
     NSTextCheckingResult* result = [regex firstMatchInString:type
@@ -45,9 +28,16 @@ Class NSClassFromTypeEncoding(NSString* type)
                                                        range:NSMakeRange(0, type.length)];
     
     if (result.range.location != NSNotFound) {
-        NSString* className = [type substringWithRange:[result rangeAtIndex:1]];
-        return NSClassFromString(className);
+        NSString* name = [type substringWithRange:[result rangeAtIndex:1]];
+        if ([name hasPrefix:@"<"]) {
+            *prt = NSProtocolFromString([name substringWithRange:NSMakeRange(1, name.length - 2)]);
+            return YES;
+        }
+        else {
+            *cls = NSClassFromString(name);
+            return YES;
+        }
     }
     
-    return nil;
+    return NO;
 }
