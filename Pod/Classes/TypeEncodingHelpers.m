@@ -15,11 +15,15 @@ BOOL NSClassAndProtocolFromTypeEncoding(NSString* type, Class* cls, Protocol** p
     *cls = nil;
     *prt = nil;
     
-    NSError* error = nil;
-    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
-                                                                           options:0
-                                                                             error:&error];
-    if (error) {
+    static NSRegularExpression* regex = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
+                                                          options:0
+                                                            error:nil];
+    });
+    
+    if (!regex) {
         return NO;
     }
     
