@@ -15,19 +15,19 @@ BOOL NSClassAndProtocolFromTypeEncoding(NSString* type, Class* cls, Protocol** p
     *cls = nil;
     *prt = nil;
     
-    static NSRegularExpression* regex = nil;
+    static NSRegularExpression* s_regex = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
+        s_regex = [NSRegularExpression regularExpressionWithPattern:@"@\"(.*)\""
                                                           options:0
                                                             error:nil];
     });
     
-    if (!regex) {
+    if (!s_regex) {
         return NO;
     }
     
-    NSTextCheckingResult* result = [regex firstMatchInString:type
+    NSTextCheckingResult* result = [s_regex firstMatchInString:type
                                                      options:0
                                                        range:NSMakeRange(0, type.length)];
     
