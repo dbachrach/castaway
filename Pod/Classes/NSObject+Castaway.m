@@ -8,7 +8,6 @@
 
 #import "NSObject+Castaway.h"
 #import "NSMethodSignatureForBlock.h"
-#import "TypeEncodingHelpers.h"
 
 #import <objc/runtime.h>
 
@@ -27,23 +26,24 @@ static BOOL CASObjectCastsToBlock(id obj, id block)
         // If the type is `id`, consider that a succesful cast.
         return YES;
     }
-    
-    Class class = nil;
-    Protocol* protocol = nil;
-    
-    if (NSClassAndProtocolFromTypeEncoding(type, &class, &protocol)) {
-    
-        if (class && [obj isKindOfClass:class]) {
-            return YES;
+    else if ([type isEqualToString:@"#"]) {
+        // If the type is `Class`
+        return class_isMetaClass(object_getClass(obj));
+    }
+    else if ([type hasPrefix:@"@\""]) {
+        // Check for protocol
+        if ([type characterAtIndex:2] == '<') {
+            // Protocols look like @"<NAME>"
+            NSString* name = [type substringWithRange:NSMakeRange(3, type.length - 5)];
+            Protocol* protocol = NSProtocolFromString(name);
+            return (protocol && [obj conformsToProtocol:protocol]);
         }
-
-        if (protocol && [obj conformsToProtocol:protocol]) {
-            return YES;
-        }
-        
-        if ([type isEqualToString:@"#"] && class_isMetaClass(object_getClass(obj))) {
-            // If the type is `Class`
-            return YES;
+        else {
+            // It's an object
+            // Objects look like @"NAME"
+            NSString* name = [type substringWithRange:NSMakeRange(2,type.length - 3)];
+            Class class = NSClassFromString(name);
+            return (class && [obj isKindOfClass:class]);
         }
     }
     

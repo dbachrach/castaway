@@ -23,5 +23,5 @@
 #define COCOAPODS_POD_AVAILABLE_castaway
 #define COCOAPODS_VERSION_MAJOR_castaway 0
 #define COCOAPODS_VERSION_MINOR_castaway 7
-#define COCOAPODS_VERSION_PATCH_castaway 2
+#define COCOAPODS_VERSION_PATCH_castaway 4
 

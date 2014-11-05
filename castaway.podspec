@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "castaway"
-  s.version          = "0.7.3"
+  s.version          = "0.7.4"
   s.summary          = "Cast objects safely in obj-c"
   s.homepage         = "https://github.com/dbachrach/castaway"
   s.license          = 'MIT'
